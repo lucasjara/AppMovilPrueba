@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Data\BuscadorImagenes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Login.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\PPrincipal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
