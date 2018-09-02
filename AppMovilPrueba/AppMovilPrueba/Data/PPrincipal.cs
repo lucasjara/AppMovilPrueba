@@ -12,7 +12,7 @@ namespace AppMovilPrueba.Data
         public PPrincipal()
         {
             Padding = new Thickness(0, 20, 0, 0);
-            var image = new Image { Source = "file.jpg", Margin = new Thickness(10, 10, 10, 10) };
+            //var image = new Image { Source = "file.jpg", Margin = new Thickness(10, 10, 10, 10) };
             Button cmdModuloImagen = new Button
             {
                 Text = "Modulo Imagen",
@@ -25,7 +25,7 @@ namespace AppMovilPrueba.Data
             Content = new StackLayout
             {
                 Children = {
-                    image,
+                    //image,
                     cmdModuloImagen
 					//new Label { Text = "Bienvenido a la pagina Principal!" }
 				}

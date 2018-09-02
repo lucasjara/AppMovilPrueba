@@ -28,6 +28,7 @@ namespace AppMovilPrueba.Droid
             LoadApplication(new App());
 
         }
+
         #region RuntimePermissions
 
         async Task TryToGetPermissions()
@@ -42,11 +43,9 @@ namespace AppMovilPrueba.Droid
         }
         const int RequestLocationId = 0;
 
-        readonly string[] PermissionsGroupLocation =
-            {
-                            //TODO add more permissions
-                            Manifest.Permission.WriteExternalStorage,
-             };
+        // Permisos a Evaluar se Ingresan en un arreglo
+        readonly string[] PermissionsGroupLocation = { Manifest.Permission.WriteExternalStorage };
+
         async Task GetPermissionsAsync()
         {
             const string permission = Manifest.Permission.AccessFineLocation;
@@ -54,7 +53,7 @@ namespace AppMovilPrueba.Droid
             if (CheckSelfPermission(permission) == (int)Android.Content.PM.Permission.Granted)
             {
                 //TODO change the message to show the permissions name
-                Toast.MakeText(this, "Special permissions granted", ToastLength.Short).Show();
+                Toast.MakeText(this, "Permisos Especiales Concedidos", ToastLength.Short).Show();
                 return;
             }
 
@@ -62,22 +61,20 @@ namespace AppMovilPrueba.Droid
             {
                 //set alert for executing the task
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.SetTitle("Permissions Needed");
-                alert.SetMessage("The application need special permissions to continue");
-                alert.SetPositiveButton("Request Permissions", (senderAlert, args) =>
+                alert.SetTitle("Permisos Necesarios");
+                alert.SetMessage("La aplicacion necesita permisos Especiales para funcionar.");
+                alert.SetPositiveButton("Conceder Permisos", (senderAlert, args) =>
                 {
                     RequestPermissions(PermissionsGroupLocation, RequestLocationId);
                 });
 
-                alert.SetNegativeButton("Cancel", (senderAlert, args) =>
+                alert.SetNegativeButton("Cancelar", (senderAlert, args) =>
                 {
-                    Toast.MakeText(this, "Cancelled!", ToastLength.Short).Show();
+                    Toast.MakeText(this, "Cancelado!", ToastLength.Short).Show();
                 });
 
                 Dialog dialog = alert.Create();
                 dialog.Show();
-
-
                 return;
             }
 
@@ -92,14 +89,11 @@ namespace AppMovilPrueba.Droid
                     {
                         if (grantResults[0] == (int)Android.Content.PM.Permission.Granted)
                         {
-                            Toast.MakeText(this, "Special permissions granted", ToastLength.Short).Show();
-
+                            Toast.MakeText(this, "Permisos Especiales Concedidos", ToastLength.Short).Show();
                         }
                         else
                         {
-                            //Permission Denied :(
-                            Toast.MakeText(this, "Special permissions denied", ToastLength.Short).Show();
-
+                            Toast.MakeText(this, "Permisos Especiales Denegados", ToastLength.Short).Show();
                         }
                     }
                     break;

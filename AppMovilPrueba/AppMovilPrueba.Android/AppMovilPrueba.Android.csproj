@@ -99,6 +99,12 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\file.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\imagen_defecto.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\img.JPG" />
+  </ItemGroup>
   <Import Project="..\AppMovilPrueba\AppMovilPrueba.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

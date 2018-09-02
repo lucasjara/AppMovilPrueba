@@ -11,7 +11,7 @@ namespace AppMovilPrueba
         public App()
         {
             InitializeComponent();
-            MainPage = new PPrincipal();
+            MainPage = new Login();
         }
 
         protected override void OnStart()

@@ -25,15 +25,14 @@ namespace AppMovilPrueba.Data
                 Margin = new Thickness()
             };
             
-            var image = new Image { Source = "file.jpg", Margin = new Thickness(10, 10, 10, 10) };
+            var image = new Image { Source = "imagen_defecto.jpg", Margin = new Thickness(10, 10, 10, 10) };
             pickPhoto.Clicked += async (sender, args) =>
             {
                 try
                 {
                     if (!CrossMedia.Current.IsPickPhotoSupported)
                     {
-                        //DisplayAlert("Photos Not Supported", ":( Permission not granted to photos.", "OK");
-                        await DisplayAlert("FOTO", "Foto no soportada", "OK");
+                        await DisplayAlert("Foto No soportada", "No cuenta con permisos para acceder a las fotos", "OK");
                         return;
                     }
                         var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
@@ -64,42 +63,8 @@ namespace AppMovilPrueba.Data
                     pickPhoto,
                     image,
                     lbl_error
-					//new Label { Text = "Welcome to Xamarin.Forms!" }
 				}
             };
-        }
-        private async Task Init()
-        {
-            await RequestLocationPermission();
-        }
-        private async Task RequestLocationPermission()
-        {
-            try
-            {
-                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
-                if (status != PermissionStatus.Granted)
-                {
-                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
-                    {
-                        await DisplayAlert("Need location", "Gunna need that location", "OK");
-                    }
-
-                    var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Location });
-                    status = results[Permission.Location];
-                }
-
-                if (status == PermissionStatus.Granted)
-                {
-                }
-                else if (status != PermissionStatus.Unknown)
-                {
-                    await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
         }
     }
 }

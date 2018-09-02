@@ -14,10 +14,12 @@ namespace AppMovilPrueba.Data
     {
         public Login()
         {
+            Padding = new Thickness(0, 20, 0, 0);
+            var image = new Image { Source = "img.jpg", Margin = new Thickness(10, 10, 10, 10) };
             Label labelerror = new Label();
             Label lblBienvenida = new Label();
-            Entry ent_username = new Entry();
-            Entry ent_userpass = new Entry();
+            Entry ent_username = new Entry { Placeholder = "Ingrese su Usuario "};
+            Entry ent_userpass = new Entry { IsPassword = true, Placeholder = "Ingrese su contraseña" };
             Button cmdIniciarSesion = new Button
             {
                 Text = "Iniciar Sesión"
@@ -26,7 +28,8 @@ namespace AppMovilPrueba.Data
             {
                 Text = "Ir a la siguiente Página"
             };
-            lblBienvenida.Text = "Bienvenido";
+            lblBienvenida.Text = "Bienvenido a AppMovilPrueba";
+            lblBienvenida.HorizontalTextAlignment = TextAlignment.Center;
             ent_username.Placeholder = "Ingrese Usuario";
             ent_userpass.Placeholder = "Ingrese su Contraseña";
             cmdIniciarSesion.Clicked += async (sender, e) =>
@@ -48,6 +51,7 @@ namespace AppMovilPrueba.Data
             {
                 Children = {
                     lblBienvenida,
+                    image,
                      ent_username,
                      ent_userpass,
                      cmdIniciarSesion,
