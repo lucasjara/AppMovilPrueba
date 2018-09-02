@@ -26,7 +26,7 @@ namespace AppMovilPrueba.Data
             {
                 Text = "Ir a la siguiente Página"
             };
-            lblBienvenida.Text = "Bienvenido ";
+            lblBienvenida.Text = "Bienvenido";
             ent_username.Placeholder = "Ingrese Usuario";
             ent_userpass.Placeholder = "Ingrese su Contraseña";
             cmdIniciarSesion.Clicked += async (sender, e) =>
