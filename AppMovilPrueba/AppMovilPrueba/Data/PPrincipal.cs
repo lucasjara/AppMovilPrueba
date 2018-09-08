@@ -11,22 +11,33 @@ namespace AppMovilPrueba.Data
     {
         public PPrincipal()
         {
-            Padding = new Thickness(0, 20, 0, 0);
+            Padding = new Thickness(5, 5, 5, 5);
             //var image = new Image { Source = "file.jpg", Margin = new Thickness(10, 10, 10, 10) };
             Button cmdModuloImagen = new Button
             {
                 Text = "Modulo Imagen",
                 Margin = new Thickness()
             };
+            Button cmdModuloMapa = new Button
+            {
+                Text = "Modulo Mapa",
+                Margin = new Thickness()
+            };
             cmdModuloImagen.Clicked += async (sender, e) =>
             {
                 await Navigation.PushModalAsync(new BuscadorImagenes());
+            };
+            cmdModuloMapa.Clicked += async (sender, e) =>
+            {
+                
+                await Navigation.PushModalAsync(new MostrarMapa());
             };
             Content = new StackLayout
             {
                 Children = {
                     //image,
-                    cmdModuloImagen
+                    cmdModuloImagen,
+                    cmdModuloMapa
 					//new Label { Text = "Bienvenido a la pagina Principal!" }
 				}
             };

@@ -14,11 +14,16 @@ namespace AppMovilPrueba.Data
     {
         public Login()
         {
+            // Declaración de Elementos
             Padding = new Thickness(0, 20, 0, 0);
             var image = new Image { Source = "img.jpg", Margin = new Thickness(10, 10, 10, 10) };
             Label labelerror = new Label();
-            Label lblBienvenida = new Label();
-            Entry ent_username = new Entry { Placeholder = "Ingrese su Usuario "};
+            Label lblBienvenida = new Label
+            {
+                Text = "Bienvenido a AppMovilPrueba",
+                HorizontalTextAlignment = TextAlignment.Center
+            };
+            Entry ent_username = new Entry { Placeholder = "Ingrese su Usuario " };
             Entry ent_userpass = new Entry { IsPassword = true, Placeholder = "Ingrese su contraseña" };
             Button cmdIniciarSesion = new Button
             {
@@ -28,10 +33,12 @@ namespace AppMovilPrueba.Data
             {
                 Text = "Ir a la siguiente Página"
             };
-            lblBienvenida.Text = "Bienvenido a AppMovilPrueba";
-            lblBienvenida.HorizontalTextAlignment = TextAlignment.Center;
-            ent_username.Placeholder = "Ingrese Usuario";
-            ent_userpass.Placeholder = "Ingrese su Contraseña";
+            ent_username.Focus();
+            // Eventos
+            ent_username.Completed += (object sender,EventArgs e) =>
+            {
+                ent_userpass.Focus();
+            };
             cmdIniciarSesion.Clicked += async (sender, e) =>
             {
                 string username = ent_username.Text;
@@ -47,6 +54,10 @@ namespace AppMovilPrueba.Data
                     await DisplayAlert("LOGIN", respuesta[1].ToString(), "OK");
                 }
             };
+            ent_userpass.Completed += (object sender, EventArgs e) =>
+            {
+                cmdIniciarSesion.Focus();
+            };
             Content = new StackLayout
             {
                 Children = {
@@ -58,6 +69,7 @@ namespace AppMovilPrueba.Data
                      labelerror
                 }
             };
+            // Metodos
             string validarAcceso(string username, string passuser)
             {
                 labelerror.Text = "";
@@ -66,9 +78,11 @@ namespace AppMovilPrueba.Data
                 {
                     WebClient cliente = new WebClient();
                     Uri uri = new Uri("http://www.infest.cl/api/usuarios/validar_usuario/");
-                    NameValueCollection parametros = new NameValueCollection();
-                    parametros.Add("usuario", username);
-                    parametros.Add("password", passuser);
+                    NameValueCollection parametros = new NameValueCollection
+                    {
+                        { "usuario", username },
+                        { "password", passuser }
+                    };
                     byte[] respuestaByte = cliente.UploadValues(uri, "POST", parametros);
                     respuestaString = Encoding.UTF8.GetString(respuestaByte);
                 }

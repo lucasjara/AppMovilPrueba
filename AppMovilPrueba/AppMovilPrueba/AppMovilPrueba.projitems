@@ -18,6 +18,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Data\BuscadorImagenes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Login.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\MostrarMapa.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\PPrincipal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
