@@ -20,7 +20,7 @@ namespace AppMovilPrueba.Data
             Label labelerror = new Label();
             Label lblBienvenida = new Label
             {
-                Text = "Bienvenido a AppMovilPrueba",
+                Text = "Bienvenido a Desarrollo Lucas",
                 HorizontalTextAlignment = TextAlignment.Center
             };
             Entry ent_username = new Entry { Placeholder = "Ingrese su Usuario " };
