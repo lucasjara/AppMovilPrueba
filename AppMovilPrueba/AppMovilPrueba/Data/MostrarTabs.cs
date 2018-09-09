@@ -7,16 +7,12 @@ using Xamarin.Forms;
 
 namespace AppMovilPrueba.Data
 {
-    public class MostrarTabs : ContentPage
+    public class MostrarTabs : TabbedPage
     {
         public MostrarTabs()
         {
-            Content = new StackLayout
-            {
-                Children = {
-                    new Label { Text = "Ventana Prueba Tabs!" }
-                }
-            };
+            Children.Add(new BuscadorImagenes { Title = "Mostrar Imagen", Icon = "foto.png" });
+            Children.Add(new MostrarMapa { Title = "Mostrar Mapa", Icon = "mapa.png" });
         }
     }
 }

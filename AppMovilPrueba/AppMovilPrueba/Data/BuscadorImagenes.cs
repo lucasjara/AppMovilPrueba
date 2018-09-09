@@ -16,12 +16,10 @@ namespace AppMovilPrueba.Data
     {
         public BuscadorImagenes()
         {
-            
-            
             Label lbl_error = new Label();
             Button pickPhoto = new Button
             {
-                Text = "Buscar Imagen",
+                Text = "Cambiar Imagen",
                 Margin = new Thickness()
             };
             
