@@ -17,9 +17,9 @@ namespace AppMovilPrueba.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
 
-        protected async override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            await TryToGetPermissions();
+            TryToGetPermissions();
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -32,11 +32,11 @@ namespace AppMovilPrueba.Droid
 
         #region RuntimePermissions
 
-        async Task TryToGetPermissions()
+        void TryToGetPermissions()
         {
             if ((int)Build.VERSION.SdkInt >= 23)
             {
-                await GetPermissionsAsync();
+                GetPermissions();
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace AppMovilPrueba.Droid
         // Permisos a Evaluar se Ingresan en un arreglo
         readonly string[] PermissionsGroupLocation = { Manifest.Permission.WriteExternalStorage };
 
-        async Task GetPermissionsAsync()
+        void GetPermissions()
         {
             const string permission = Manifest.Permission.AccessFineLocation;
 
@@ -82,7 +82,7 @@ namespace AppMovilPrueba.Droid
             RequestPermissions(PermissionsGroupLocation, RequestLocationId);
 
         }
-        public override async void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             switch (requestCode)
             {
