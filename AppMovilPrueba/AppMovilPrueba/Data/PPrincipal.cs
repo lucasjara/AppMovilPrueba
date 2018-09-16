@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppMovilPrueba.Usuarios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,11 @@ namespace AppMovilPrueba.Data
                 Text = "Selecionar Pestañas",
                 Margin = new Thickness()
             };
+            Button cmdModuloUsuario = new Button
+            {
+                Text = "Selecionar Usuario",
+                Margin = new Thickness()
+            };
             cmdModuloImagen.Clicked += async (sender, e) =>
             {
                 await Navigation.PushModalAsync(new BuscadorImagenes());
@@ -49,6 +55,11 @@ namespace AppMovilPrueba.Data
             {
                 await Navigation.PushModalAsync(new MostrarTabs());
             };
+            cmdModuloUsuario.Clicked += async (sender, e) =>
+            {
+                string origen = "asd";
+                await Navigation.PushModalAsync(new PaginaMaestra(origen));
+            };
             Content = new StackLayout
             {
                 Children = {
@@ -56,7 +67,8 @@ namespace AppMovilPrueba.Data
                     cmdModuloImagen,
                     cmdModuloMapa,
                     cmdModuloInterfaz,
-                    cmdModuloTabs
+                    cmdModuloTabs,
+                    cmdModuloUsuario
 					//new Label { Text = "Bienvenido a la pagina Principal!" }
 				}
             };
