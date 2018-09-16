@@ -19,17 +19,23 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
         {
             local = new ObservableCollection<LocalViewModel>();
             ListView lstView = new ListView();
-            lstView.RowHeight = 60;
-            string id = 1;
+            
+            // ID que debemos obtener de la app
+            string id = "1";
             var respuesta = JArray.Parse(ObtenerListadoLocalesFavoritos(id));
             if (respuesta[0].ToString() == "S")
             {
+                lstView.RowHeight = 60;
                 lstView.ItemTemplate = new DataTemplate(typeof(FormatoCelda));
-
-                local.Add(new LocalViewModel { Nombre = "LOCAL DE PRUEBAS TEMUCO", Descripcion = "LOCAL DE PRUEBAS SISTEMA", Imagen = "img_defecto_local.png" });
+                JArray jsonString = JArray.Parse(respuesta[1].ToString());
+                foreach (JObject item in jsonString)
+                {
+                    local.Add(new LocalViewModel { Nombre = item.GetValue("LOCAL").ToString(), Descripcion = item.GetValue("DESCRIPCION").ToString(), Imagen = "img_defecto_local.png" });
+                }
             }
             else
             {
+                lstView.RowHeight = 25;
                 lstView.ItemTemplate = new DataTemplate(typeof(SinFormato));
                 local.Add(new LocalViewModel { Nombre = respuesta[1].ToString() });
             }
@@ -77,9 +83,10 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                 var horizontalLayout = new StackLayout() { };
 
                 nombre.SetBinding(Label.TextProperty, new Binding("Nombre"));
-                nombre.FontSize = 15;
+                nombre.FontSize = 20;
+                nombre.HorizontalOptions = LayoutOptions.Center;
                 verticaLayout.Children.Add(nombre);
-
+                horizontalLayout.Children.Add(verticaLayout);
                 View = horizontalLayout;
             }
         }
@@ -90,7 +97,7 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
             try
             {
                 WebClient cliente = new WebClient();
-                Uri uri = new Uri("http://www.infest.cl/api/usuarios/obtener_listado_locales_favoritos/");
+                Uri uri = new Uri("https://www.infest.cl/api/usuarios/obtener_listado_locales_favoritos");
                 NameValueCollection parametros = new NameValueCollection
                     {
                         { "id", id },
@@ -98,7 +105,7 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                 byte[] respuestaByte = cliente.UploadValues(uri, "POST", parametros);
                 respuestaString = Encoding.UTF8.GetString(respuestaByte);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 respuestaString = "[\"N\",\"Error al Enviar la petición.\"]";
             }

@@ -25,7 +25,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\TabsUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\ListadoFavoritos.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\Model\LocalViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\Model\VeggieViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
