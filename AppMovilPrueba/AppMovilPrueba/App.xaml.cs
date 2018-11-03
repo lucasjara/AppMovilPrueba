@@ -12,7 +12,7 @@ namespace AppMovilPrueba
         public App()
         {
             InitializeComponent();
-            MainPage = new Login();
+            MainPage = new PaginaMaestra("");
         }
 
         protected override void OnStart()

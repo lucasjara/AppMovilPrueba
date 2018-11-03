@@ -77,7 +77,7 @@ namespace AppMovilPrueba.Data
                 try
                 {
                     WebClient cliente = new WebClient();
-                    Uri uri = new Uri("http://www.infest.cl/api/usuarios/validar_usuario/");
+                    Uri uri = new Uri("http://www.infest.cl/servicios/api/usuarios/validar_usuario/");
                     NameValueCollection parametros = new NameValueCollection
                     {
                         { "usuario", username },

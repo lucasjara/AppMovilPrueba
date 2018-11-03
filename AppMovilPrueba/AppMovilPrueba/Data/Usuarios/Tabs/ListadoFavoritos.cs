@@ -19,7 +19,6 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
         {
             local = new ObservableCollection<LocalViewModel>();
             ListView lstView = new ListView();
-            
             // ID que debemos obtener de la app
             string id = "1";
             var respuesta = JArray.Parse(ObtenerListadoLocalesFavoritos(id));
@@ -97,7 +96,7 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
             try
             {
                 WebClient cliente = new WebClient();
-                Uri uri = new Uri("https://www.infest.cl/api/usuarios/obtener_listado_locales_favoritos");
+                Uri uri = new Uri("https://www.infest.cl/servicios/api/usuarios/obtener_listado_locales_favoritos");
                 NameValueCollection parametros = new NameValueCollection
                     {
                         { "id", id },

@@ -22,8 +22,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MostrarMapa.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MostrarTabs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\PPrincipal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\EstadoPedido.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\MostrarTabsPedido.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\Pedido.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\VistaPrevia.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\TabsUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\ListadoFavoritos.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\ListadoOfertas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\Model\ProductoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\Model\LocalViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

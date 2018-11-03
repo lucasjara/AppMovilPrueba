@@ -45,7 +45,7 @@ namespace AppMovilPrueba.Droid
         const int RequestLocationId = 0;
 
         // Permisos a Evaluar se Ingresan en un arreglo
-        readonly string[] PermissionsGroupLocation = { Manifest.Permission.WriteExternalStorage };
+        readonly string[] PermissionsGroupLocation = { Manifest.Permission.WriteExternalStorage, Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation };
 
         void GetPermissions()
         {
