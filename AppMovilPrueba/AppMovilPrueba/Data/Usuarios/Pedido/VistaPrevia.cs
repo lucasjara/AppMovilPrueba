@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageCircle.Forms.Plugin.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,6 +79,42 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
             Label lbl_Total = new Label { Text = "Total:", FontSize = 10 };
             lbl_valor_Total.Text = foo.Precio;
 
+            Button btn_mas = new Button { Image = "plus.png", CornerRadius = 50, HorizontalOptions = LayoutOptions.Center, Margin = new Thickness(18, 0, 18, 0) };
+            Button btn_menos = new Button { Image = "minus.png", CornerRadius = 50, HorizontalOptions = LayoutOptions.Center, Margin = new Thickness(18, 0, 18, 0) };
+
+
+            btn_mas.Clicked += async (sender, e) =>
+            {
+                int numero = Int32.Parse(lbl_cantidad_total.Text) + 1;
+                string precio_string = lbl_valor_Precio.Text;
+
+                string resultado = precio_string.Replace("$", "");
+                resultado = resultado.Replace(".", "");
+                int precio = Int32.Parse(resultado);
+                int total = numero * precio;
+                // Remplazar Valor Textos
+                lbl_cantidad_total.Text = numero.ToString();
+                lbl_valor_Total.Text = total.ToString("C");
+            };
+            btn_menos.Clicked += async (sender, e) =>
+            {
+                int numero = Int32.Parse(lbl_cantidad_total.Text) - 1;
+
+                if (numero != 0)
+                {
+                    string precio_string = lbl_valor_Precio.Text;
+                    string resultado = precio_string.Replace("$", "");
+                    resultado = resultado.Replace(".", "");
+                    int precio = Int32.Parse(resultado);
+                    int total = numero * precio;
+                    // Remplazar Valor Textos
+                    lbl_cantidad_total.Text = numero.ToString();
+                    lbl_valor_Total.Text = total.ToString("C");
+                }
+            };
+            //----------------------------
+            stack_dos.Children.Add(btn_mas);
+            stack_dos.Children.Add(btn_menos);
             stack_dos.Children.Add(lbl_Cantidad);
             stack_dos.Children.Add(lbl_cantidad_total);
             stack_dos.Children.Add(lbl_Precio);
@@ -112,8 +149,8 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
             stack_tres.Children.Add(ent_monto);
             // Elementos Final Siguiente / Cancelar
             var stack_cuatro = new StackLayout { Margin = new Thickness(5) };
-            Button cmdSiguiente = new Button { Text = "Siguiente", BackgroundColor = Color.FromHex("#FF8800"), TextColor = Color.FromHex("#FFFFFF") };
-            Button cmdCancelar = new Button { Text = "Cancelar", BackgroundColor = Color.FromHex("#47525E"), TextColor = Color.FromHex("#FFFFFF") };
+            Button cmdSiguiente = new Button { Text = "Siguiente", BackgroundColor = Color.FromHex("#FF8800"), TextColor = Color.FromHex("#FFFFFF") , Margin = new Thickness(30,0,30,0) };
+            Button cmdCancelar = new Button { Text = "Cancelar", BackgroundColor = Color.FromHex("#47525E"), TextColor = Color.FromHex("#FFFFFF"), Margin = new Thickness(30, 0, 30, 0) };
             // Eventos Siguiente / Cancelar
             cmdSiguiente.Clicked += async (sender, e) =>
             {
