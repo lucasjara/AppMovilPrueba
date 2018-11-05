@@ -1,4 +1,6 @@
 ﻿using AppMovilPrueba.Data;
+using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
+using AppMovilPrueba.Data.Usuarios.Tabs.Model;
 using AppMovilPrueba.Usuarios;
 using System;
 using Xamarin.Forms;
@@ -12,7 +14,9 @@ namespace AppMovilPrueba
         public App()
         {
             InitializeComponent();
-            MainPage = new PaginaMaestra("");
+            var foo = new ProductoViewModel();
+            var ped = new PedidoViewModel();
+            MainPage = new PaginaMaestra("",foo,ped);
         }
 
         protected override void OnStart()

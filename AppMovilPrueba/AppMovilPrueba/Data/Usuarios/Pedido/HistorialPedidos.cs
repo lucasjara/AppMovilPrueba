@@ -1,4 +1,4 @@
-﻿using AppMovilPrueba.Data.Usuarios.Tabs.Model;
+﻿using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,18 +10,19 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace AppMovilPrueba.Data.Usuarios.Tabs
+namespace AppMovilPrueba.Data.Usuarios.Pedido
 {
-    public class ListadoFavoritos : ContentPage
+    public class HistorialPedidos : ContentPage
     {
-        public ObservableCollection<LocalViewModel> local { get; set; }
-        public ListadoFavoritos()
+        public ObservableCollection<PedidoViewModel> pedido { get; set; }
+
+        public HistorialPedidos()
         {
-            local = new ObservableCollection<LocalViewModel>();
             ListView lstView = new ListView();
             // ID que debemos obtener de la app
             string id = "1";
-            var respuesta = JArray.Parse(ObtenerListadoLocalesFavoritos(id));
+            var respuesta = JArray.Parse(ObtenerHistorialPedidos(id));
+            // var respuesta = JArray.Parse("[{'ID_'}]");
             if (respuesta[0].ToString() == "S")
             {
                 lstView.RowHeight = 60;
@@ -29,43 +30,54 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                 JArray jsonString = JArray.Parse(respuesta[1].ToString());
                 foreach (JObject item in jsonString)
                 {
-                    local.Add(new LocalViewModel { Nombre = item.GetValue("LOCAL").ToString(), Descripcion = item.GetValue("DESCRIPCION").ToString(), Imagen = "img_defecto_local.png" });
+                    pedido.Add(new PedidoViewModel
+                    {
+                        IdPedido = item.GetValue("ID_ENC").ToString(),
+                        NombreProducto = item.GetValue("PRODUCTO").ToString(),
+                        Local = item.GetValue("LOCAL").ToString(),
+                        Precio = item.GetValue("PRECIO").ToString(),
+                        EstadoPedido = item.GetValue("ESTADO_PEDIDO").ToString(),
+                        Cantidad = item.GetValue("CANTIDAD").ToString(),
+                        Total = item.GetValue("TOTAL").ToString(),
+                        TipoPago = item.GetValue("TIPO_PAGO").ToString(),
+                        Imagen = "mapa.jpg",
+                        Observacion = item.GetValue("OBSERVACION").ToString(),
+                        Fecha = item.GetValue("FECHA").ToString()
+                    });
                 }
             }
             else
             {
-                lstView.RowHeight = 20;
+                lstView.RowHeight = 25;
                 lstView.ItemTemplate = new DataTemplate(typeof(SinFormato));
-                local.Add(new LocalViewModel { Nombre = respuesta[1].ToString() });
+                pedido.Add(new PedidoViewModel { NombreProducto = respuesta[1].ToString() });
             }
-
-            lstView.ItemsSource = local;
+            lstView.ItemsSource = pedido;
             Content = lstView;
         }
-
         public class FormatoCelda : ViewCell
         {
             public FormatoCelda()
             {
                 //instantiate each of our views
                 var imagen = new Image();
-                var nombre = new Label();
-                var descripcion = new Label();
+                var titulo = new Label();
+                var fecha = new Label();
                 var verticaLayout = new StackLayout();
                 var horizontalLayout = new StackLayout() { };
 
-                nombre.SetBinding(Label.TextProperty, new Binding("Nombre"));
-                descripcion.SetBinding(Label.TextProperty, new Binding("Descripcion"));
+                titulo.SetBinding(Label.TextProperty, new Binding("NombreProducto"));
+                fecha.SetBinding(Label.TextProperty, new Binding("Fecha"));
                 imagen.SetBinding(Image.SourceProperty, new Binding("Imagen"));
 
                 imagen.HorizontalOptions = LayoutOptions.Start;
                 horizontalLayout.Orientation = StackOrientation.Horizontal;
                 horizontalLayout.HorizontalOptions = LayoutOptions.Fill;
-                nombre.FontSize = 20;
-                descripcion.FontSize = 15;
+                titulo.FontSize = 20;
+                fecha.FontSize = 20;
 
-                verticaLayout.Children.Add(nombre);
-                verticaLayout.Children.Add(descripcion);
+                verticaLayout.Children.Add(titulo);
+                verticaLayout.Children.Add(fecha);
                 horizontalLayout.Children.Add(imagen);
                 horizontalLayout.Children.Add(verticaLayout);
 
@@ -81,7 +93,7 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                 var verticaLayout = new StackLayout();
                 var horizontalLayout = new StackLayout() { };
 
-                nombre.SetBinding(Label.TextProperty, new Binding("Nombre"));
+                nombre.SetBinding(Label.TextProperty, new Binding("NombreProducto"));
                 nombre.FontSize = 20;
                 nombre.HorizontalOptions = LayoutOptions.Center;
                 verticaLayout.Children.Add(nombre);
@@ -89,14 +101,13 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                 View = horizontalLayout;
             }
         }
-        // Obtenemos los datos de los locales favoritos
-        string ObtenerListadoLocalesFavoritos(string id)
+        private string ObtenerHistorialPedidos(string id)
         {
             string respuestaString = "";
             try
             {
                 WebClient cliente = new WebClient();
-                Uri uri = new Uri("https://www.infest.cl/servicios/api/usuarios/obtener_listado_locales_favoritos");
+                Uri uri = new Uri("https://www.infest.cl/servicios/api/usuarios/obtener_listado_historico_usuario");
                 NameValueCollection parametros = new NameValueCollection
                     {
                         { "id", id },

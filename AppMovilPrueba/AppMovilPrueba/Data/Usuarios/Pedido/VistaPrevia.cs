@@ -1,7 +1,14 @@
-﻿using ImageCircle.Forms.Plugin.Abstractions;
+﻿using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
+using AppMovilPrueba.Data.Usuarios.Tabs.Model;
+using AppMovilPrueba.Usuarios;
+using ImageCircle.Forms.Plugin.Abstractions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 using Xamarin.Forms;
@@ -10,44 +17,9 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
 {
     public class VistaPrevia : ContentPage
     {
-        class PruebaTemplate : Grid
-        {
-            public PruebaTemplate()
-            {
-                RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
-                RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.6, GridUnitType.Star) });
-                RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
-                ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.05, GridUnitType.Star) });
-                ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.95, GridUnitType.Star) });
 
-                var topBoxView = new BoxView { Color = Color.FromHex("#FF8800") };
-                Children.Add(topBoxView, 0, 0);
-                Grid.SetColumnSpan(topBoxView, 2);
-
-                var topLabel = new Label
-                {
-                    TextColor = Color.White,
-                    VerticalOptions = LayoutOptions.Center
-                };
-                topLabel.SetBinding(Label.TextProperty, new TemplateBinding("Parent.HeaderText"));
-                Children.Add(topLabel, 1, 0);
-
-                var contentPresenter = new ContentPresenter();
-                Children.Add(contentPresenter, 0, 1);
-                Grid.SetColumnSpan(contentPresenter, 2);
-
-
-                var bottomLabel = new Label
-                {
-                    TextColor = Color.White,
-                    VerticalOptions = LayoutOptions.Center
-                };
-                bottomLabel.SetBinding(Label.TextProperty, new TemplateBinding("Parent.FooterText"));
-                Children.Add(bottomLabel, 1, 2);
-            }
-        }
-        ControlTemplate pruebatemplate = new ControlTemplate(typeof(PruebaTemplate));
-        public static readonly BindableProperty HeaderTextProperty = BindableProperty.Create("HeaderText", typeof(string), typeof(MostrarInterfaz), " Vista Previa Pedido Delysoft");
+        ControlTemplate pruebatemplate = new ControlTemplate(typeof(PedidoTemplate));
+        public static readonly BindableProperty HeaderTextProperty = BindableProperty.Create("HeaderText", typeof(string), typeof(MostrarInterfaz), "Pedido Delysoft");
 
         public string HeaderText
         {
@@ -60,8 +32,9 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
 
         Label lbl_valor_Total = new Label { FontSize = 20 };
         Label lbl_cantidad_total = new Label { Text = "1" };
+        private ProductoViewModel foo;
 
-        public VistaPrevia(Tabs.Model.ProductoViewModel foo)
+        public VistaPrevia(ProductoViewModel foo)
         {
             // Elementos Titulo y Imagen
             var stack_uno = new StackLayout { VerticalOptions = LayoutOptions.Center };
@@ -127,6 +100,7 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
             Label lbl_efectivo_detalle = new Label { Text = "(Entregara el monto exacto que aparece en el total)", FontSize = 8, VerticalTextAlignment = TextAlignment.Center };
             Label lbl_sobre_detalle = new Label { Text = "(Entregara un monto superior al que aparece en el Total)", FontSize = 8, VerticalTextAlignment = TextAlignment.Center };
             Entry ent_monto = new Entry { Placeholder = "Ingrese el Monto con el que pagara", Keyboard = Keyboard.Numeric };
+            Entry ent_observacion = new Entry { Placeholder = "Ingrese Direccion de Entrega", Keyboard = Keyboard.Text };
 
             var stack_tres = new StackLayout();
             var stack_tres_uno = new StackLayout { Orientation = StackOrientation.Horizontal };
@@ -147,9 +121,10 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
             stack_tres.Children.Add(stack_tres_uno);
             stack_tres.Children.Add(stack_tres_dos);
             stack_tres.Children.Add(ent_monto);
+
             // Elementos Final Siguiente / Cancelar
             var stack_cuatro = new StackLayout { Margin = new Thickness(5) };
-            Button cmdSiguiente = new Button { Text = "Siguiente", BackgroundColor = Color.FromHex("#FF8800"), TextColor = Color.FromHex("#FFFFFF") , Margin = new Thickness(30,0,30,0) };
+            Button cmdSiguiente = new Button { Text = "Siguiente", BackgroundColor = Color.FromHex("#FF8800"), TextColor = Color.FromHex("#FFFFFF"), Margin = new Thickness(30, 0, 30, 0) };
             Button cmdCancelar = new Button { Text = "Cancelar", BackgroundColor = Color.FromHex("#47525E"), TextColor = Color.FromHex("#FFFFFF"), Margin = new Thickness(30, 0, 30, 0) };
             // Eventos Siguiente / Cancelar
             cmdSiguiente.Clicked += async (sender, e) =>
@@ -167,7 +142,36 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
                         await DisplayAlert("Alerta", "Monto no Valido al Elegir SobreEfectivo", "OK");
                     }
                 }
-                if (flag) { await DisplayAlert("Alerta", "OK podemos Seguir", "OK"); }// await Navigation.PushModalAsync(new PPrincipal());k
+                if (flag)
+                {
+                    var respuesta = JArray.Parse(EnviarDatosPedido("1", lbl_cantidad_total.Text, foo.Id, ""));
+                    if (respuesta[0].ToString() == "S")
+                    {
+                        var jsonString = JArray.Parse(respuesta[2].ToString());
+                        //await DisplayAlert("Alerta", jsonString, "OK");
+
+                        var pedido = new PedidoViewModel();
+
+                        foreach (JObject item in jsonString)
+                        {
+                            pedido.IdPedido = item.GetValue("ID_ENC").ToString();
+                            pedido.NombreProducto = item.GetValue("PRODUCTO").ToString();
+                            pedido.Local = item.GetValue("LOCAL").ToString();
+                            pedido.Precio = item.GetValue("PRECIO").ToString();
+                            pedido.EstadoPedido = item.GetValue("ESTADO_PEDIDO").ToString();
+                            pedido.Cantidad = item.GetValue("CANTIDAD").ToString();
+                            pedido.Total = item.GetValue("TOTAL").ToString();
+                            pedido.TipoPago = item.GetValue("TIPO_PAGO").ToString();
+                            pedido.Imagen = "sushi.jpg";
+                            pedido.Observacion = item.GetValue("OBSERVACION").ToString();
+                        }
+                        await Navigation.PushModalAsync(new PaginaMaestra("2",foo,pedido));
+                    }
+                    else
+                    {
+                        await DisplayAlert("Alerta", respuesta[1].ToString(), "OK");
+                    }
+                }
             };
             cmdCancelar.Clicked += async (sender, e) =>
             {
@@ -194,11 +198,12 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
             var contentView = new ContentView
             {
                 Content = stack_general,
-                ControlTemplate = pruebatemplate,
+                // ControlTemplate = pruebatemplate,
                 BackgroundColor = Color.FromHex("#E9E9E9")
             };
             Content = contentView;
         }
+
 
         void switcher_Toggled(object sender, ToggledEventArgs e)
         {
@@ -213,6 +218,30 @@ namespace AppMovilPrueba.Data.Usuarios.Pedido
             {
                 switcher.IsToggled = false;
             }
+        }
+        // Peticion WebService
+        string EnviarDatosPedido(string id_usuario, string cantidad, string id_producto, string observacion)
+        {
+            string respuestaString = "";
+            try
+            {
+                WebClient cliente = new WebClient();
+                Uri uri = new Uri("http://www.infest.cl/servicios/api/usuarios/crear_pedido_local/");
+                NameValueCollection parametros = new NameValueCollection
+                    {
+                        { "id_usuario", id_usuario },
+                        { "cantidad", cantidad },
+                        { "id_prod", id_producto },
+                        { "observacion", "Avenida Siempreviva 742" }
+                    };
+                byte[] respuestaByte = cliente.UploadValues(uri, "POST", parametros);
+                respuestaString = Encoding.UTF8.GetString(respuestaByte);
+            }
+            catch (Exception ex)
+            {
+                respuestaString = "[\"N\",\"Error al Enviar la petición.\"]";
+            }
+            return respuestaString;
         }
     }
 }

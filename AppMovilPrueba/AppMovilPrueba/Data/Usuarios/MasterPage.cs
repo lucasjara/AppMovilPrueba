@@ -1,4 +1,7 @@
 ﻿using AppMovilPrueba.Data;
+using AppMovilPrueba.Data.Usuarios.Pedido;
+using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
+using AppMovilPrueba.Data.Usuarios.Tabs.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,8 @@ namespace AppMovilPrueba.Usuarios
 
         public MasterPage()
         {
+            var foo = new ProductoViewModel();
+            var ped = new PedidoViewModel();
 
             var masterPageItems = new List<MasterPageItem>();
             masterPageItems.Add(new MasterPageItem
@@ -27,11 +32,10 @@ namespace AppMovilPrueba.Usuarios
 
             masterPageItems.Add(new MasterPageItem
             {
-                Title = "Notificaciones",
+                Title = "Historial de Pedidos",
                 IconSource = "notificaciones2_100x100.png",
-                //TargetType = typeof(PNotificaciones)
+                TargetType = typeof(HistorialPedidos)
             });
-
 
             listView = new ListView
             {
@@ -47,10 +51,16 @@ namespace AppMovilPrueba.Usuarios
                 SeparatorVisibility = SeparatorVisibility.None
             };
 
-            Padding = new Thickness(0, 40, 0, 0);
+            Padding = new Thickness(0, 0, 0, 0);
             Icon = "menu_opciones_24x24.png";
             Title = "Opciones";
-
+            Label lbl_nombre = new Label
+            {
+                Text = Title,
+                FontSize = 20,
+                HorizontalOptions = LayoutOptions.Center,
+                Margin = new Thickness(5)
+            };
             //Botón cerrar sesión
             Button btn_cerrar_sesion = new Button();
             btn_cerrar_sesion.Clicked += Btn_Cerrar_Sesion_Clicked;
@@ -62,6 +72,7 @@ namespace AppMovilPrueba.Usuarios
             {
                 Children =
                 {
+                    lbl_nombre,
                     listView,
                     btn_cerrar_sesion
                 }

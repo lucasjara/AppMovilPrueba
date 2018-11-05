@@ -1,5 +1,7 @@
 ﻿using AppMovilPrueba.Data.Usuarios.Pedido;
+using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
 using AppMovilPrueba.Data.Usuarios.Tabs.Model;
+using AppMovilPrueba.Usuarios;
 using ImageCircle.Forms.Plugin.Abstractions;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,6 +29,7 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
             var stack = new StackLayout { Spacing = 0 };
             producto = new ObservableCollection<ProductoViewModel>();
             ListView lstView = new ListView();
+
             // ID que debemos obtener de la app
             string id = "1";
             Button cmdProductosZona = new Button
@@ -44,13 +47,14 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                     var respuesta = JArray.Parse(ObtenerListadoProductosDisponibles(id, latitude, longitud));
                     if (respuesta[0].ToString() == "S")
                     {
-                        lstView.RowHeight = 200;
+                        lstView.RowHeight = 60;
                         lstView.ItemTemplate = new DataTemplate(typeof(FormatoCelda));
                         JArray jsonString = JArray.Parse(respuesta[1].ToString());
                         foreach (JObject item in jsonString)
                         {
                             producto.Add(new ProductoViewModel
                             {
+                                Id = item.GetValue("ID_PRODUCTO").ToString(),
                                 Nombre = item.GetValue("PRODUCTO").ToString(),
                                 Descripcion = item.GetValue("DESCRIPCION").ToString(),
                                 Precio = dar_formato(item.GetValue("PRECIO").ToString()),
@@ -64,7 +68,7 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                     }
                     else
                     {
-                        lstView.RowHeight = 15;
+                        lstView.RowHeight = 30;
                         lstView.ItemTemplate = new DataTemplate(typeof(SinFormato));
                         producto.Add(new ProductoViewModel { Nombre = respuesta[1].ToString() });
                         lstView.ItemsSource = producto;
@@ -95,8 +99,8 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
             if (sender is ListView lv) lv.SelectedItem = null;
 
             var foo = e.Item as ProductoViewModel;
-
-            await Navigation.PushModalAsync(new VistaPrevia(foo));
+            var ped = new PedidoViewModel();
+            await Navigation.PushModalAsync(new PaginaMaestra("1",foo,ped));
         }
         public class FormatoCelda : ViewCell
         {
@@ -121,34 +125,27 @@ namespace AppMovilPrueba.Data.Usuarios.Tabs
                 // Instancias de Textos
                 var nombre = new Label();
                 var descripcion = new Label();
-                var precio = new Label();
-                var local = new Label
-                {
-
-                };
+                var precio = new Label { HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center };
+                var local = new Label ();
 
                 var verticaLayout = new StackLayout();
                 var horizontalLayout = new StackLayout();
-
 
                 nombre.SetBinding(Label.TextProperty, new Binding("Nombre"));
                 local.SetBinding(Label.TextProperty, new Binding("Local"));
                 precio.SetBinding(Label.TextProperty, new Binding("Precio"));
 
                 imagen.SetBinding(Image.SourceProperty, new Binding("Imagen"));
-                imagenproducto.SetBinding(Image.SourceProperty, new Binding("ImagenProducto"));
 
                 horizontalLayout.Orientation = StackOrientation.Horizontal;
                 horizontalLayout.HorizontalOptions = LayoutOptions.Fill;
 
-               
                 nombre.FontSize = 20;
                 local.FontSize = 20;
                 precio.FontSize = 25;
 
                 verticaLayout.Children.Add(nombre);
                 verticaLayout.Children.Add(local);
-                verticaLayout.Children.Add(imagenproducto);
 
                 horizontalLayout.Children.Add(imagen);
                 horizontalLayout.Children.Add(verticaLayout);

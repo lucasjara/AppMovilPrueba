@@ -1,5 +1,8 @@
 ﻿using AppMovilPrueba.Data;
 using AppMovilPrueba.Data.Usuarios;
+using AppMovilPrueba.Data.Usuarios.Pedido;
+using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
+using AppMovilPrueba.Data.Usuarios.Tabs.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +16,22 @@ namespace AppMovilPrueba.Usuarios
     {
         MasterPage masterPage;
 
-        public PaginaMaestra(String origen)
+        public PaginaMaestra(String origen, ProductoViewModel foo,PedidoViewModel ped)
         {
             masterPage = new MasterPage();
             Master = masterPage;
-            Detail = new NavigationPage(new TabsUser());
+            if (origen == "")
+            {
+                Detail = new NavigationPage(new TabsUser());
+            }
+            else if (origen == "1")
+            {
+                Detail = new NavigationPage(new VistaPrevia(foo));
+            }
+            else if (origen == "2")
+            {
+                Detail = new NavigationPage(new Pedido(ped));
+            }
             masterPage.ListView.ItemSelected += OnItemSelected;
         }
         void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

@@ -22,9 +22,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\MostrarMapa.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\MostrarTabs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\PPrincipal.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\EstadoPedido.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\MostrarTabsPedido.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\HistorialPedidos.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\Pedido.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\PedidoTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\Tabs\PedidoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Pedido\VistaPrevia.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\TabsUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\Usuarios\Tabs\ListadoFavoritos.cs" />

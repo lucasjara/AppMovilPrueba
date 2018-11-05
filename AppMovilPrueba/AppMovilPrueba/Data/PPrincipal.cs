@@ -1,4 +1,6 @@
-﻿using AppMovilPrueba.Usuarios;
+﻿using AppMovilPrueba.Data.Usuarios.Pedido.Tabs;
+using AppMovilPrueba.Data.Usuarios.Tabs.Model;
+using AppMovilPrueba.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +60,9 @@ namespace AppMovilPrueba.Data
             cmdModuloUsuario.Clicked += async (sender, e) =>
             {
                 string origen = "asd";
-                await Navigation.PushModalAsync(new PaginaMaestra(origen));
+                var foo = new ProductoViewModel();
+                var ped = new PedidoViewModel();
+                await Navigation.PushModalAsync(new PaginaMaestra(origen,foo,ped));
             };
             Content = new StackLayout
             {
